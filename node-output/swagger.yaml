@@ -1,0 +1,170 @@
+openapi: 3.0.0
+info:
+  title: Event API
+  version: "1.1"
+servers:
+- url: /
+paths:
+  /events:
+    post:
+      summary: Publish an event
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        "201":
+          description: Event created
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    Event:
+      type: object
+      properties:
+        uri:
+          type: string
+        type:
+          type: string
+        title:
+          type: string
+        language:
+          type: string
+        descriptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_descriptions'
+        eventdetails:
+          $ref: '#/components/schemas/Event_eventdetails'
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_places'
+        people:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_people'
+        subjects:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_subjects'
+        plannedcoverage:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_plannedcoverage'
+    Event_descriptions:
+      type: object
+      properties:
+        role:
+          type: string
+        value:
+          type: string
+    Event_eventdetails_dates:
+      type: object
+      properties:
+        startdate:
+          type: string
+          format: date
+        enddate:
+          type: string
+          format: date
+    Event_eventdetails_organiser:
+      type: object
+      properties:
+        name:
+          type: string
+    Event_eventdetails:
+      type: object
+      properties:
+        dates:
+          $ref: '#/components/schemas/Event_eventdetails_dates'
+        organiser:
+          $ref: '#/components/schemas/Event_eventdetails_organiser'
+    Event_address:
+      type: object
+      properties:
+        locality:
+          type: string
+        country:
+          type: string
+    Event_contactinfo:
+      type: object
+      properties:
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Event_address'
+    Event_places:
+      type: object
+      properties:
+        name:
+          type: string
+        contactinfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_contactinfo'
+    Event_address_1:
+      type: object
+      properties:
+        country:
+          type: string
+    Event_contactinfo_1:
+      type: object
+      properties:
+        address:
+          $ref: '#/components/schemas/Event_address_1'
+    Event_people:
+      type: object
+      properties:
+        name:
+          type: string
+        contactinfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_contactinfo_1'
+    Event_subjects:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+    Event_dates:
+      type: object
+      properties:
+        startdate:
+          type: string
+          format: date-time
+        enddate:
+          type: string
+          format: date-time
+    Event_renditions:
+      type: object
+      properties:
+        contenttype:
+          type: string
+        bitrate:
+          type: string
+        aspectratio:
+          type: string
+        videocodec:
+          type: string
+        format:
+          type: string
+    Event_plannedcoverage:
+      type: object
+      properties:
+        uri:
+          type: string
+        type:
+          type: string
+        event:
+          type: string
+        dates:
+          $ref: '#/components/schemas/Event_dates'
+        renditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_renditions'
