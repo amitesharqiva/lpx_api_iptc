@@ -1,0 +1,187 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "title" : "News Events API",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/newsEvents" : {
+      "post" : {
+        "summary" : "Publish a news event",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NewsEvent"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "News event created"
+          },
+          "400" : {
+            "description" : "Invalid input"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "NewsEvent" : {
+        "type" : "object",
+        "properties" : {
+          "uri" : {
+            "type" : "string"
+          },
+          "standard" : {
+            "$ref" : "#/components/schemas/NewsEvent_standard"
+          },
+          "firstcreated" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "language" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "representationtype" : {
+            "type" : "string"
+          },
+          "pubstatus" : {
+            "type" : "string"
+          },
+          "urgency" : {
+            "type" : "integer"
+          },
+          "headlines" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NewsEvent_headlines"
+            }
+          },
+          "profile" : {
+            "type" : "string"
+          },
+          "copyrightholder" : {
+            "type" : "string"
+          },
+          "copyrightnotice" : {
+            "type" : "string"
+          },
+          "usageterms" : {
+            "type" : "string"
+          },
+          "slugline" : {
+            "type" : "string"
+          },
+          "bodies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NewsEvent_bodies"
+            }
+          },
+          "genres" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NewsEvent_genres"
+            }
+          },
+          "subjects" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NewsEvent_subjects"
+            }
+          },
+          "by" : {
+            "type" : "string"
+          },
+          "located" : {
+            "type" : "string"
+          },
+          "altids" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NewsEvent_headlines"
+            }
+          },
+          "ednote" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NewsEvent_standard" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "schema" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NewsEvent_headlines" : {
+        "type" : "object",
+        "properties" : {
+          "role" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NewsEvent_bodies" : {
+        "type" : "object",
+        "properties" : {
+          "charcount" : {
+            "type" : "integer"
+          },
+          "wordcount" : {
+            "type" : "integer"
+          },
+          "role" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NewsEvent_genres" : {
+        "type" : "object",
+        "properties" : {
+          "uri" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NewsEvent_subjects" : {
+        "type" : "object",
+        "properties" : {
+          "rel" : {
+            "type" : "string"
+          },
+          "uri" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
