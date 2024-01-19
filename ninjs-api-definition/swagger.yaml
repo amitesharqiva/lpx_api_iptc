@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Event API
+  title: Events API
   version: "1.1"
 servers:
 - url: /
@@ -19,8 +19,114 @@ paths:
           description: Event created
         "400":
           description: Invalid input
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+  /events/retrive/{uri}:
+    get:
+      summary: Retrive an event
+      parameters:
+      - name: uri
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully retrieved event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+  /events/metadata/{uri}:
+    get:
+      summary: Get event metadata
+      parameters:
+      - name: uri
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Successfully retrieved event metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RenditionType'
+        "400":
+          description: Invalid input
+        "401":
+          description: Unauthorized
+        "404":
+          description: Event not found
 components:
   schemas:
+    RenditionType:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of this object in the array of renditions. For example
+            'thumbnail'
+        uri:
+          type: string
+          description: The identifier for this rendition.
+          format: uri
+        version:
+          type: integer
+          description: "Version of this rendition, identified by the uri."
+        versionguid:
+          type: string
+          description: The globally unique identifier of the target item (guid) which
+            also includes the version identifier.
+        href:
+          type: string
+          description: The URL for accessing the rendition as a resource.
+          format: uri
+        code:
+          type: string
+          description: Code for this rendition.
+        signal:
+          type: string
+          description: Signal in remote content.
+        contenttype:
+          type: string
+          description: A media type which applies to this rendition.
+        title:
+          type: string
+          description: A title for the link to the rendition resource
+        generated:
+          type: string
+          description: The date/time when the specific Content Rendition was generated
+            by the Content Generator.
+          format: date-time
+        height:
+          type: number
+        width:
+          type: number
+        sizeinbytes:
+          type: number
+          description: The size of the rendition resource in bytes
+        duration:
+          type: number
+          description: The total time duration of the content in seconds.
+      additionalProperties: false
     Event:
       type: object
       properties:
