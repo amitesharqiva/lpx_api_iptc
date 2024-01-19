@@ -53,6 +53,17 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
+uri = 'uri_example' # str | 
+
+try:
+    # Get event metadata
+    api_response = api_instance.events_metadata_uri_get(uri)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling DefaultApi->events_metadata_uri_get: %s\n" % e)
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
 body = swagger_client.Event() # Event | 
 
 try:
@@ -60,6 +71,17 @@ try:
     api_instance.events_post(body)
 except ApiException as e:
     print("Exception when calling DefaultApi->events_post: %s\n" % e)
+
+# create an instance of the API class
+api_instance = swagger_client.DefaultApi(swagger_client.ApiClient(configuration))
+uri = 'uri_example' # str | 
+
+try:
+    # Retrive an event
+    api_response = api_instance.events_retrive_uri_get(uri)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling DefaultApi->events_retrive_uri_get: %s\n" % e)
 ```
 
 ## Documentation for API Endpoints
@@ -68,7 +90,9 @@ All URIs are relative to */*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*DefaultApi* | [**events_metadata_uri_get**](docs/DefaultApi.md#events_metadata_uri_get) | **GET** /events/metadata/{uri} | Get event metadata
 *DefaultApi* | [**events_post**](docs/DefaultApi.md#events_post) | **POST** /events | Publish an event
+*DefaultApi* | [**events_retrive_uri_get**](docs/DefaultApi.md#events_retrive_uri_get) | **GET** /events/retrive/{uri} | Retrive an event
 
 ## Documentation For Models
 
@@ -93,6 +117,7 @@ Class | Method | HTTP request | Description
  - [EventPlannedcoverage](docs/EventPlannedcoverage.md)
  - [EventRenditions](docs/EventRenditions.md)
  - [EventSubjects](docs/EventSubjects.md)
+ - [RenditionType](docs/RenditionType.md)
 
 ## Documentation For Authorization
 
