@@ -15,24 +15,23 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.api.default_api import DefaultApi  # noqa: E501
+from swagger_client.models.event import Event  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestDefaultApi(unittest.TestCase):
-    """DefaultApi unit test stubs"""
+class TestEvent(unittest.TestCase):
+    """Event unit test stubs"""
 
     def setUp(self):
-        self.api = DefaultApi()  # noqa: E501
+        pass
 
     def tearDown(self):
         pass
 
-    def test_events_post(self):
-        """Test case for events_post
-
-        Publish an event  # noqa: E501
-        """
+    def testEvent(self):
+        """Test Event"""
+        # FIXME: construct object with mandatory attributes with example values
+        # model = swagger_client.models.event.Event()  # noqa: E501
         pass
 
 

@@ -4,12 +4,12 @@ All URIs are relative to */*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**news_events_post**](DefaultApi.md#news_events_post) | **POST** /newsEvents | Publish a news event
+[**events_post**](DefaultApi.md#events_post) | **POST** /events | Publish an event
 
-# **news_events_post**
-> news_events_post(body)
+# **events_post**
+> events_post(body)
 
-Publish a news event
+Publish an event
 
 ### Example
 ```python
@@ -21,20 +21,20 @@ from pprint import pprint
 
 # create an instance of the API class
 api_instance = swagger_client.DefaultApi()
-body = swagger_client.NewsEvent() # NewsEvent | 
+body = swagger_client.Event() # Event | 
 
 try:
-    # Publish a news event
-    api_instance.news_events_post(body)
+    # Publish an event
+    api_instance.events_post(body)
 except ApiException as e:
-    print("Exception when calling DefaultApi->news_events_post: %s\n" % e)
+    print("Exception when calling DefaultApi->events_post: %s\n" % e)
 ```
 
 ### Parameters
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **body** | [**NewsEvent**](NewsEvent.md)|  | 
+ **body** | [**Event**](Event.md)|  | 
 
 ### Return type
 
