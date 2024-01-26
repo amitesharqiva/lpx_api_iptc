@@ -216,6 +216,14 @@
           }
         }
       },
+      "Event_RenditionType_poi" : {
+        "type" : "object",
+        "properties" : {
+          "x" : {
+            "type" : "integer"
+          }
+        }
+      },
       "Event_RenditionType" : {
         "type" : "object",
         "properties" : {
@@ -253,6 +261,9 @@
           "contenttype" : {
             "type" : "string"
           },
+          "title" : {
+            "type" : "string"
+          },
           "generated" : {
             "type" : "string",
             "format" : "date-time"
@@ -271,6 +282,57 @@
           },
           "averagebitrate" : {
             "type" : "number"
+          },
+          "format" : {
+            "type" : "string"
+          },
+          "originalfilename" : {
+            "type" : "string"
+          },
+          "fileextension" : {
+            "type" : "string"
+          },
+          "digest" : {
+            "type" : "string"
+          },
+          "samplerate" : {
+            "type" : "number"
+          },
+          "audiobitrate" : {
+            "type" : "number"
+          },
+          "aspectratio" : {
+            "type" : "string"
+          },
+          "colourspace" : {
+            "type" : "string"
+          },
+          "backgroundcolour" : {
+            "type" : "string"
+          },
+          "orientation" : {
+            "type" : "string"
+          },
+          "videocodec" : {
+            "type" : "string"
+          },
+          "videoscaling" : {
+            "type" : "string"
+          },
+          "framerate" : {
+            "type" : "number"
+          },
+          "resolution" : {
+            "type" : "string"
+          },
+          "audiocodec" : {
+            "type" : "string"
+          },
+          "scene" : {
+            "type" : "string"
+          },
+          "poi" : {
+            "$ref" : "#/components/schemas/Event_RenditionType_poi"
           }
         }
       },
