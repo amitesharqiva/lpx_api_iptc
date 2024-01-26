@@ -1,4 +1,4 @@
-# LPC API Project
+# LPX API Project
 
 ## Overview
 
