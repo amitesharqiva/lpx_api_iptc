@@ -138,8 +138,8 @@
           "altids" : {
             "$ref" : "#/components/schemas/Event_altids"
           },
-          "renditiontype" : {
-            "$ref" : "#/components/schemas/Event_renditiontype"
+          "RenditionType" : {
+            "$ref" : "#/components/schemas/Event_RenditionType"
           },
           "commissionedby" : {
             "type" : "array",
@@ -216,9 +216,20 @@
           }
         }
       },
-      "Event_renditiontype" : {
+      "Event_RenditionType" : {
         "type" : "object",
         "properties" : {
+          "items" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "additionalProperties" : false
+            }
+          },
+          "name" : {
+            "title" : "Name",
+            "type" : "string"
+          },
           "uri" : {
             "type" : "string",
             "format" : "uri"
