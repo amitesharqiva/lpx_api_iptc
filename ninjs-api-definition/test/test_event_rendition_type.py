@@ -15,12 +15,12 @@ from __future__ import absolute_import
 import unittest
 
 import swagger_client
-from swagger_client.models.event_dates import EventDates  # noqa: E501
+from swagger_client.models.event_rendition_type import EventRenditionType  # noqa: E501
 from swagger_client.rest import ApiException
 
 
-class TestEventDates(unittest.TestCase):
-    """EventDates unit test stubs"""
+class TestEventRenditionType(unittest.TestCase):
+    """EventRenditionType unit test stubs"""
 
     def setUp(self):
         pass
@@ -28,10 +28,10 @@ class TestEventDates(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def testEventDates(self):
-        """Test EventDates"""
+    def testEventRenditionType(self):
+        """Test EventRenditionType"""
         # FIXME: construct object with mandatory attributes with example values
-        # model = swagger_client.models.event_dates.EventDates()  # noqa: E501
+        # model = swagger_client.models.event_rendition_type.EventRenditionType()  # noqa: E501
         pass
 
 

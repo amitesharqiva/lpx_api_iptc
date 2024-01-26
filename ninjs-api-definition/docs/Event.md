@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **language** | **str** |  | [optional] 
 **descriptions** | [**list[EventDescriptions]**](EventDescriptions.md) |  | [optional] 
 **altids** | [**EventAltids**](EventAltids.md) |  | [optional] 
+**rendition_type** | [**EventRenditionType**](EventRenditionType.md) |  | [optional] 
 **commissionedby** | [**list[EventCommissionedby]**](EventCommissionedby.md) |  | [optional] 
 **eventdetails** | [**EventEventdetails**](EventEventdetails.md) |  | [optional] 
 **headlines** | [**list[EventHeadlines]**](EventHeadlines.md) |  | [optional] 
