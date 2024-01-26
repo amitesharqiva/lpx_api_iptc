@@ -1,16 +1,34 @@
 {
   "openapi" : "3.0.0",
   "info" : {
-    "title" : "Events API",
-    "version" : "1.1"
+    "title" : "LPX API",
+    "version" : "2.0"
   },
   "servers" : [ {
     "url" : "/"
   } ],
   "paths" : {
     "/events" : {
-      "post" : {
-        "summary" : "Publish an event",
+      "get" : {
+        "summary" : "Select Event",
+        "responses" : {
+          "200" : {
+            "description" : "Event details",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Event not found"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update Event",
         "requestBody" : {
           "content" : {
             "application/json" : {
@@ -23,98 +41,69 @@
         },
         "responses" : {
           "200" : {
+            "description" : "Event updated"
+          },
+          "404" : {
+            "description" : "Event not found"
+          }
+        }
+      },
+      "post" : {
+        "summary" : "Create Event",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
             "description" : "Event created",
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_200"
+                  "$ref" : "#/components/schemas/inline_response_201"
                 }
               }
             }
           },
           "400" : {
             "description" : "Invalid input"
-          },
-          "401" : {
-            "description" : "Unauthorized"
-          },
-          "403" : {
-            "description" : "Forbidden"
-          },
-          "404" : {
-            "description" : "Not Found"
-          },
-          "500" : {
-            "description" : "Internal Server Error"
           }
         }
-      }
-    },
-    "/events/provider/{EventId}/subscribe" : {
-      "get" : {
-        "summary" : "Retrive an event",
-        "parameters" : [ {
-          "name" : "EventId",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
+      },
+      "delete" : {
+        "summary" : "Delete Event",
         "responses" : {
           "200" : {
-            "description" : "Successfully retrieved event",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/Event"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Invalid input"
-          },
-          "401" : {
-            "description" : "Unauthorized"
-          }
-        }
-      }
-    },
-    "/events/metadata/{EventId}" : {
-      "get" : {
-        "summary" : "Get event metadata",
-        "parameters" : [ {
-          "name" : "EventId",
-          "in" : "path",
-          "required" : true,
-          "style" : "simple",
-          "explode" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "Successfully retrieved event metadata",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/RenditionType"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Invalid input"
-          },
-          "401" : {
-            "description" : "Unauthorized"
+            "description" : "Event deleted"
           },
           "404" : {
             "description" : "Event not found"
+          }
+        }
+      }
+    },
+    "/events/list" : {
+      "get" : {
+        "summary" : "List Events",
+        "responses" : {
+          "200" : {
+            "description" : "An array of events",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -122,74 +111,6 @@
   },
   "components" : {
     "schemas" : {
-      "RenditionType" : {
-        "required" : [ "name" ],
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string",
-            "description" : "The name of this object in the array of renditions. For example 'thumbnail'"
-          },
-          "uri" : {
-            "type" : "string",
-            "description" : "The identifier for this rendition.",
-            "format" : "uri"
-          },
-          "version" : {
-            "type" : "integer",
-            "description" : "Version of this rendition, identified by the uri."
-          },
-          "versionguid" : {
-            "type" : "string",
-            "description" : "The globally unique identifier of the target item (guid) which also includes the version identifier."
-          },
-          "href" : {
-            "type" : "string",
-            "description" : "The URL for accessing the rendition as a resource.",
-            "format" : "uri"
-          },
-          "code" : {
-            "type" : "string",
-            "description" : "Code for this rendition."
-          },
-          "signal" : {
-            "type" : "string",
-            "description" : "Signal in remote content."
-          },
-          "contenttype" : {
-            "type" : "string",
-            "description" : "A media type which applies to this rendition."
-          },
-          "title" : {
-            "type" : "string",
-            "description" : "A title for the link to the rendition resource"
-          },
-          "generated" : {
-            "type" : "string",
-            "description" : "The date/time when the specific Content Rendition was generated by the Content Generator.",
-            "format" : "date-time"
-          },
-          "height" : {
-            "type" : "number"
-          },
-          "width" : {
-            "type" : "number"
-          },
-          "sizeinbytes" : {
-            "type" : "number",
-            "description" : "The size of the rendition resource in bytes"
-          },
-          "duration" : {
-            "type" : "number",
-            "description" : "The total time duration of the content in seconds."
-          },
-          "averagebitrate" : {
-            "type" : "number",
-            "description" : "The average amount of data that is transferred per second in the audio or video content."
-          }
-        },
-        "additionalProperties" : false
-      },
       "Event" : {
         "type" : "object",
         "properties" : {
@@ -216,6 +137,9 @@
           },
           "altids" : {
             "$ref" : "#/components/schemas/Event_altids"
+          },
+          "renditiontype" : {
+            "$ref" : "#/components/schemas/Event_renditiontype"
           },
           "commissionedby" : {
             "type" : "array",
@@ -261,12 +185,12 @@
           }
         }
       },
-      "inline_response_200" : {
+      "inline_response_201" : {
         "type" : "object",
         "properties" : {
-          "EventId" : {
+          "id" : {
             "type" : "string",
-            "description" : "The ID of the event"
+            "description" : "The ID of the created event"
           }
         }
       },
@@ -289,6 +213,53 @@
             "items" : {
               "$ref" : "#/components/schemas/Event_descriptions"
             }
+          }
+        }
+      },
+      "Event_renditiontype" : {
+        "type" : "object",
+        "properties" : {
+          "uri" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "version" : {
+            "type" : "integer"
+          },
+          "versionguid" : {
+            "type" : "string"
+          },
+          "href" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "signal" : {
+            "type" : "string"
+          },
+          "contenttype" : {
+            "type" : "string"
+          },
+          "generated" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "height" : {
+            "type" : "number"
+          },
+          "width" : {
+            "type" : "number"
+          },
+          "sizeinbytes" : {
+            "type" : "number"
+          },
+          "duration" : {
+            "type" : "number"
+          },
+          "averagebitrate" : {
+            "type" : "number"
           }
         }
       },
