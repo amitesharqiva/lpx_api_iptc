@@ -4,11 +4,74 @@
     "title" : "LPX API",
     "version" : "2.0"
   },
-  "servers" : [ {
-    "url" : "/"
-  } ],
   "paths" : {
     "/events" : {
+      "post" : {
+        "summary" : "Create Event",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Event created",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "string",
+                      "description" : "The ID of the created event"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "put" : {
+        "summary" : "Update Event",
+        "requestBody" : {
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Event"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Event updated"
+          },
+          "404" : {
+            "description" : "Event not found"
+          }
+        }
+      },
+      "delete" : {
+        "summary" : "Delete Event",
+        "responses" : {
+          "200" : {
+            "description" : "Event deleted"
+          },
+          "404" : {
+            "description" : "Event not found"
+          }
+        }
+      },
       "get" : {
         "summary" : "Select Event",
         "responses" : {
@@ -21,66 +84,6 @@
                 }
               }
             }
-          },
-          "404" : {
-            "description" : "Event not found"
-          }
-        }
-      },
-      "put" : {
-        "summary" : "Update Event",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Event"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "Event updated"
-          },
-          "404" : {
-            "description" : "Event not found"
-          }
-        }
-      },
-      "post" : {
-        "summary" : "Create Event",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Event"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Event created",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/inline_response_201"
-                }
-              }
-            }
-          },
-          "400" : {
-            "description" : "Invalid input"
-          }
-        }
-      },
-      "delete" : {
-        "summary" : "Delete Event",
-        "responses" : {
-          "200" : {
-            "description" : "Event deleted"
           },
           "404" : {
             "description" : "Event not found"
@@ -132,28 +135,282 @@
           "descriptions" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_descriptions"
+              "type" : "object",
+              "properties" : {
+                "role" : {
+                  "type" : "string"
+                },
+                "value" : {
+                  "type" : "string"
+                }
+              }
             }
           },
           "altids" : {
-            "$ref" : "#/components/schemas/Event_altids"
+            "type" : "object",
+            "properties" : {
+              "title" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "role" : {
+                      "type" : "string"
+                    },
+                    "value" : {
+                      "type" : "string"
+                    }
+                  }
+                }
+              }
+            }
           },
           "RenditionType" : {
-            "$ref" : "#/components/schemas/Event_RenditionType"
+            "type" : "object",
+            "properties" : {
+              "items" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "additionalProperties" : false
+                }
+              },
+              "name" : {
+                "type" : "string",
+                "title" : "Name"
+              },
+              "uri" : {
+                "type" : "string",
+                "format" : "uri"
+              },
+              "version" : {
+                "type" : "integer"
+              },
+              "versionguid" : {
+                "type" : "string"
+              },
+              "href" : {
+                "type" : "string",
+                "format" : "uri"
+              },
+              "code" : {
+                "type" : "string"
+              },
+              "signal" : {
+                "type" : "string"
+              },
+              "contenttype" : {
+                "type" : "string"
+              },
+              "title" : {
+                "type" : "string"
+              },
+              "generated" : {
+                "type" : "string",
+                "format" : "date-time"
+              },
+              "height" : {
+                "type" : "number"
+              },
+              "width" : {
+                "type" : "number"
+              },
+              "sizeinbytes" : {
+                "type" : "number"
+              },
+              "duration" : {
+                "type" : "number"
+              },
+              "averagebitrate" : {
+                "type" : "number"
+              },
+              "format" : {
+                "type" : "string"
+              },
+              "originalfilename" : {
+                "type" : "string"
+              },
+              "fileextension" : {
+                "type" : "string"
+              },
+              "digest" : {
+                "type" : "string"
+              },
+              "samplerate" : {
+                "type" : "number"
+              },
+              "audiobitrate" : {
+                "type" : "number"
+              },
+              "aspectratio" : {
+                "type" : "string"
+              },
+              "colourspace" : {
+                "type" : "string"
+              },
+              "backgroundcolour" : {
+                "type" : "string"
+              },
+              "orientation" : {
+                "type" : "string"
+              },
+              "videocodec" : {
+                "type" : "string"
+              },
+              "videoscaling" : {
+                "type" : "string"
+              },
+              "framerate" : {
+                "type" : "number"
+              },
+              "resolution" : {
+                "type" : "string"
+              },
+              "audiocodec" : {
+                "type" : "string"
+              },
+              "scene" : {
+                "type" : "string"
+              },
+              "poi" : {
+                "type" : "object",
+                "properties" : {
+                  "x" : {
+                    "type" : "integer"
+                  }
+                }
+              }
+            }
           },
           "commissionedby" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_commissionedby"
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string"
+                },
+                "value" : {
+                  "type" : "string"
+                }
+              }
             }
           },
           "eventdetails" : {
-            "$ref" : "#/components/schemas/Event_eventdetails"
+            "type" : "object",
+            "properties" : {
+              "dates" : {
+                "type" : "object",
+                "properties" : {
+                  "startdate" : {
+                    "type" : "string",
+                    "format" : "date-time"
+                  },
+                  "enddate" : {
+                    "type" : "string",
+                    "format" : "date-time"
+                  },
+                  "duration" : {
+                    "type" : "string"
+                  },
+                  "firstcreated" : {
+                    "type" : "string",
+                    "format" : "date-time"
+                  }
+                }
+              },
+              "embargoed" : {
+                "type" : "string",
+                "format" : "date-time"
+              },
+              "organiser" : {
+                "type" : "object",
+                "properties" : {
+                  "name" : {
+                    "type" : "string"
+                  }
+                }
+              },
+              "usageterms" : {
+                "type" : "string"
+              },
+              "pubstatus" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "string"
+                }
+              },
+              "copyrightholder" : {
+                "type" : "string"
+              },
+              "copyrightnotice" : {
+                "type" : "string"
+              },
+              "location" : {
+                "type" : "string"
+              },
+              "infosource" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "name" : {
+                      "type" : "string"
+                    },
+                    "role" : {
+                      "type" : "string"
+                    },
+                    "uri" : {
+                      "type" : "string",
+                      "format" : "uri"
+                    },
+                    "literal" : {
+                      "type" : "string"
+                    },
+                    "contactinfo" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "address" : {
+                            "type" : "object",
+                            "properties" : {
+                              "country" : {
+                                "type" : "string"
+                              }
+                            }
+                          },
+                          "value" : {
+                            "type" : "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "ednote" : {
+                "type" : "object",
+                "properties" : {
+                  "contactinfo" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
           },
           "headlines" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_headlines"
+              "type" : "object",
+              "properties" : {
+                "role" : {
+                  "type" : "string"
+                },
+                "contenttype" : {
+                  "type" : "string"
+                }
+              }
             }
           },
           "slugline" : {
@@ -162,463 +419,150 @@
           "places" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_places"
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string"
+                },
+                "contactinfo" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "name" : {
+                        "type" : "string"
+                      },
+                      "address" : {
+                        "type" : "object",
+                        "properties" : {
+                          "locality" : {
+                            "type" : "string"
+                          },
+                          "country" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "value" : {
+                        "type" : "string"
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "people" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_people"
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string"
+                },
+                "contactinfo" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "address" : {
+                        "type" : "object",
+                        "properties" : {
+                          "locality" : {
+                            "type" : "string"
+                          },
+                          "country" : {
+                            "type" : "string"
+                          }
+                        }
+                      },
+                      "value" : {
+                        "type" : "string"
+                      }
+                    }
+                  }
+                },
+                "relationship" : {
+                  "type" : "string"
+                }
+              }
             }
           },
           "subjects" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_subjects"
+              "type" : "object",
+              "properties" : {
+                "name" : {
+                  "type" : "string"
+                },
+                "uri" : {
+                  "type" : "string"
+                },
+                "mediatopics" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
             }
           },
           "plannedcoverage" : {
             "type" : "array",
             "items" : {
-              "$ref" : "#/components/schemas/Event_plannedcoverage"
-            }
-          }
-        }
-      },
-      "inline_response_201" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "description" : "The ID of the created event"
-          }
-        }
-      },
-      "Event_descriptions" : {
-        "type" : "object",
-        "properties" : {
-          "role" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_altids" : {
-        "type" : "object",
-        "properties" : {
-          "title" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_descriptions"
-            }
-          }
-        }
-      },
-      "Event_RenditionType_poi" : {
-        "type" : "object",
-        "properties" : {
-          "x" : {
-            "type" : "integer"
-          }
-        }
-      },
-      "Event_RenditionType" : {
-        "type" : "object",
-        "properties" : {
-          "items" : {
-            "type" : "array",
-            "items" : {
               "type" : "object",
-              "additionalProperties" : false
-            }
-          },
-          "name" : {
-            "title" : "Name",
-            "type" : "string"
-          },
-          "uri" : {
-            "type" : "string",
-            "format" : "uri"
-          },
-          "version" : {
-            "type" : "integer"
-          },
-          "versionguid" : {
-            "type" : "string"
-          },
-          "href" : {
-            "type" : "string",
-            "format" : "uri"
-          },
-          "code" : {
-            "type" : "string"
-          },
-          "signal" : {
-            "type" : "string"
-          },
-          "contenttype" : {
-            "type" : "string"
-          },
-          "title" : {
-            "type" : "string"
-          },
-          "generated" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "height" : {
-            "type" : "number"
-          },
-          "width" : {
-            "type" : "number"
-          },
-          "sizeinbytes" : {
-            "type" : "number"
-          },
-          "duration" : {
-            "type" : "number"
-          },
-          "averagebitrate" : {
-            "type" : "number"
-          },
-          "format" : {
-            "type" : "string"
-          },
-          "originalfilename" : {
-            "type" : "string"
-          },
-          "fileextension" : {
-            "type" : "string"
-          },
-          "digest" : {
-            "type" : "string"
-          },
-          "samplerate" : {
-            "type" : "number"
-          },
-          "audiobitrate" : {
-            "type" : "number"
-          },
-          "aspectratio" : {
-            "type" : "string"
-          },
-          "colourspace" : {
-            "type" : "string"
-          },
-          "backgroundcolour" : {
-            "type" : "string"
-          },
-          "orientation" : {
-            "type" : "string"
-          },
-          "videocodec" : {
-            "type" : "string"
-          },
-          "videoscaling" : {
-            "type" : "string"
-          },
-          "framerate" : {
-            "type" : "number"
-          },
-          "resolution" : {
-            "type" : "string"
-          },
-          "audiocodec" : {
-            "type" : "string"
-          },
-          "scene" : {
-            "type" : "string"
-          },
-          "poi" : {
-            "$ref" : "#/components/schemas/Event_RenditionType_poi"
-          }
-        }
-      },
-      "Event_commissionedby" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_eventdetails_dates" : {
-        "type" : "object",
-        "properties" : {
-          "startdate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "enddate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "duration" : {
-            "type" : "string"
-          },
-          "firstcreated" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "Event_eventdetails_organiser" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_eventdetails_address" : {
-        "type" : "object",
-        "properties" : {
-          "country" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_eventdetails_contactinfo" : {
-        "type" : "object",
-        "properties" : {
-          "address" : {
-            "$ref" : "#/components/schemas/Event_eventdetails_address"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_eventdetails_infosource" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "role" : {
-            "type" : "string"
-          },
-          "uri" : {
-            "type" : "string",
-            "format" : "uri"
-          },
-          "literal" : {
-            "type" : "string"
-          },
-          "contactinfo" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_eventdetails_contactinfo"
-            }
-          }
-        }
-      },
-      "Event_eventdetails_ednote" : {
-        "type" : "object",
-        "properties" : {
-          "contactinfo" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_eventdetails" : {
-        "type" : "object",
-        "properties" : {
-          "dates" : {
-            "$ref" : "#/components/schemas/Event_eventdetails_dates"
-          },
-          "embargoed" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "organiser" : {
-            "$ref" : "#/components/schemas/Event_eventdetails_organiser"
-          },
-          "usageterms" : {
-            "type" : "string"
-          },
-          "pubstatus" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "copyrightholder" : {
-            "type" : "string"
-          },
-          "copyrightnotice" : {
-            "type" : "string"
-          },
-          "location" : {
-            "type" : "string"
-          },
-          "infosource" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_eventdetails_infosource"
-            }
-          },
-          "ednote" : {
-            "$ref" : "#/components/schemas/Event_eventdetails_ednote"
-          }
-        }
-      },
-      "Event_headlines" : {
-        "type" : "object",
-        "properties" : {
-          "role" : {
-            "type" : "string"
-          },
-          "contenttype" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_address" : {
-        "type" : "object",
-        "properties" : {
-          "locality" : {
-            "type" : "string"
-          },
-          "country" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_contactinfo" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "address" : {
-            "$ref" : "#/components/schemas/Event_address"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_places" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "contactinfo" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_contactinfo"
-            }
-          }
-        }
-      },
-      "Event_contactinfo_1" : {
-        "type" : "object",
-        "properties" : {
-          "address" : {
-            "$ref" : "#/components/schemas/Event_address"
-          },
-          "value" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_people" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "contactinfo" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_contactinfo_1"
-            }
-          },
-          "relationship" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_subjects" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "uri" : {
-            "type" : "string"
-          },
-          "mediatopics" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        }
-      },
-      "Event_dates" : {
-        "type" : "object",
-        "properties" : {
-          "startdate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "enddate" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "expires" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "Event_renditions" : {
-        "type" : "object",
-        "properties" : {
-          "contenttype" : {
-            "type" : "string"
-          },
-          "bitrate" : {
-            "type" : "string"
-          },
-          "aspectratio" : {
-            "type" : "string"
-          },
-          "videocodec" : {
-            "type" : "string"
-          },
-          "format" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Event_plannedcoverage" : {
-        "type" : "object",
-        "properties" : {
-          "uri" : {
-            "type" : "string"
-          },
-          "type" : {
-            "type" : "string"
-          },
-          "event" : {
-            "type" : "string"
-          },
-          "dates" : {
-            "$ref" : "#/components/schemas/Event_dates"
-          },
-          "renditions" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/Event_renditions"
+              "properties" : {
+                "uri" : {
+                  "type" : "string"
+                },
+                "type" : {
+                  "type" : "string"
+                },
+                "event" : {
+                  "type" : "string"
+                },
+                "dates" : {
+                  "type" : "object",
+                  "properties" : {
+                    "startdate" : {
+                      "type" : "string",
+                      "format" : "date-time"
+                    },
+                    "enddate" : {
+                      "type" : "string",
+                      "format" : "date-time"
+                    },
+                    "expires" : {
+                      "type" : "string",
+                      "format" : "date-time"
+                    }
+                  }
+                },
+                "renditions" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "contenttype" : {
+                        "type" : "string"
+                      },
+                      "bitrate" : {
+                        "type" : "string"
+                      },
+                      "aspectratio" : {
+                        "type" : "string"
+                      },
+                      "videocodec" : {
+                        "type" : "string"
+                      },
+                      "format" : {
+                        "type" : "string"
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }
