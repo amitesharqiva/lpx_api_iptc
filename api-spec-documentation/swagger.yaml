@@ -105,6 +105,9 @@ components:
   schemas:
     Event:
       type: object
+      required:
+        - uri
+        - eventdetails
       properties:
         uri:
           type: string
