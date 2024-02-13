@@ -178,7 +178,7 @@ components:
         headlines:
           type: array
           items:
-            $ref: '#/components/schemas/Eventheadlines'
+            $ref: '#/components/schemas/EventHeadlines'
             
         people:
           type: array
@@ -188,7 +188,7 @@ components:
         organisations:
           type: array
           items:
-            $ref: '#/components/schemas/OrganisationType'   
+            $ref: '#/components/schemas/organisationType'   
         
         places:
           type: array
@@ -240,7 +240,7 @@ components:
         renditions: 
           type: array
           items: 
-            $ref: '#/components/schemas/EventRenditionType'
+            $ref: '#/components/schemas/renditionType'
             
         associations:
           type: array
@@ -363,7 +363,7 @@ components:
           type: integer
         y:
           type: integer
-    EventRenditionType:
+    renditionType:
       type: object
       properties:
         items:
@@ -384,15 +384,46 @@ components:
         href:
           type: string
           format: uri
+        code:
+          type: string
+        signal:
+          type: string
         transportprotocol: 
           type: string
           enum: 
             - srtlistener
             - srtcaller
-        code:
+        maxbitrate:
+          type: number
+        cidr:
           type: string
-        signal:
+        port:
+          type: number
+        srtpassword:
           type: string
+        listeneraddress:
+          type: string
+        streamid:
+          type: string
+        minlatency:
+          type: number
+        codec:
+          type: string
+        scantype:
+          type: string
+          enum:
+            - progressive
+            - interlaced
+        bitrate:
+          type: number
+        gop:
+          type: number
+        ratecontrolmode:
+          type: string
+          enum:
+            - CBR
+            - VBR
+            - QVBR
         contenttype:
           type: string
         title:
@@ -420,6 +451,8 @@ components:
           type: string
         samplerate:
           type: number
+        audiochannels:
+          type: number
         audiobitrate:
           type: number
         aspectratio:
@@ -442,10 +475,12 @@ components:
           type: string
         scene:
           type: string
+        printsize:
+          type: number
         poi:
           $ref: '#/components/schemas/EventRenditionTypepoi'
           
-    EventcommissionedType: 
+    commissionedType: 
       type: object
       additionalProperties: false
       properties: 
@@ -491,13 +526,13 @@ components:
         dates:
             $ref: '#/components/schemas/datesobjectType'
         organiser:
-            $ref: '#/components/schemas/OrganisationType'
+            $ref: '#/components/schemas/organisationType'
 
       additionalProperties: false
       
       
       
-    Eventheadlines:
+    EventHeadlines:
       type: array
       items:
         type: object
@@ -617,7 +652,7 @@ components:
               - withheld
               - canceled  
           commissioned: 
-            $ref: '#/components/schemas/EventcommissionedType'
+            $ref: '#/components/schemas/commissionedType'
             
           dates:
             $ref: '#/components/schemas/datesobjectType'
@@ -684,7 +719,7 @@ components:
           renditions:
             type: array
             items:
-              $ref: '#/components/schemas/EventRenditionType'
+              $ref: '#/components/schemas/renditionType'
     
     
     
@@ -894,7 +929,7 @@ components:
         startdate:
           $ref: '#/components/schemas/truncatedDateTimeType'
         enddate:
-            $ref: '#/components/schemas/truncatedDateTimeType'
+          $ref: '#/components/schemas/truncatedDateTimeType'
         duration:
           
           type: string
@@ -909,14 +944,12 @@ components:
                 $ref: '#/components/schemas/truncatedDateTimeType'
             recurrence-rules:
               type: array
-              
               items:
                 type: object
                 additionalProperties: false
                 properties:
                   frequency:
                     type: string
-                    
                     enum:
                       - secondly
                       - minutely
@@ -935,7 +968,7 @@ components:
                     type: string
     
 
-    OrganisationType:
+    organisationType:
       type: object
       additionalProperties: false
       properties:
