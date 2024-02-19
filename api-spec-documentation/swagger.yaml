@@ -1,11 +1,18 @@
 openapi: 3.0.0
 info:
   title: LPX API
-  version: '3.0'
+  version: '3.2'
 servers:
   - url: /
 paths:
-  /events:
+  /events/{id}:
+    parameters:
+        - name: id
+          in: path
+          description: ID of the item to fetch
+          required: true
+          schema:
+            type: string
     get:
       summary: Select Event
       responses:
@@ -21,7 +28,7 @@ paths:
         type: aws_proxy
         uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-select_event/invocations
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-select_event-invokelambdarole
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
     put:
@@ -41,9 +48,26 @@ paths:
         type: aws_proxy
         uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-update_event/invocations
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-update_event-invokelambdarole
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
+    
+    delete:
+      summary: Delete Event
+      responses:
+        '200':
+          description: Event deleted
+        '404':
+          description: Event not found
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-delete_event/invocations
+        httpMethod: POST
+        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-delete_event-invokelambdarole
+        passthroughBehavior: when_no_match
+        timeoutInMillis: 5000
+        
+  /events:
     post:
       summary: Create Event
       requestBody:
@@ -68,20 +92,48 @@ paths:
         credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
-    delete:
-      summary: Delete Event
+    
+  /events/share_event:
+    post:
+      summary: Share Event
+      parameters:
+        - name: id
+          in: query
+          description: Event id
+          required: true
+          schema:
+            type: string
+        - name: user_id
+          in: query
+          description: The id of the user to share with - specific user or can take All to grant every one access
+          required: true
+          
+          schema:
+            type: string
+            default: All
+        - name: share
+          in: query
+          description: Indicates to add a share or remove a share
+          required: true
+          schema:
+            type: boolean
+            default: true
       responses:
         '200':
-          description: Event deleted
+          description: Event shared successfully
+          
+        '400':
+          description: Invalid input
         '404':
-          description: Event not found
+          description: Event or user not found
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-delete_event/invocations
+        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-share_event/invocations
         httpMethod: POST
         credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
+  
   /events/list:
     get:
       summary: List Events
@@ -98,13 +150,22 @@ paths:
         type: aws_proxy
         uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-list_events/invocations
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-list_events-invokelambdarole
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
 components:
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      x-amazon-apigateway-api-key-source: HEADER
   schemas:
     Event:
       type: object
+      required:
+        - uri
+        - eventdetails
       properties:
         uri:
           type: string
@@ -128,68 +189,51 @@ components:
             - partial
         profile:
           type: string
-        
         version:
           type: string
-        
         versioncreated:
           type: string
           format: date-time
-          
         contentcreated:
           type: string
           format: date-time
-        
 
         embargoed:
           type: string
           format: date-time
-        
-        
         urgency:
           type: number
-        
         copyrightholder:
           type: string
-          
         copyrightnotice:
           type: string 
-          
         usageterms:
           type: string 
-        
         ednote:
           type: string 
-        
         language:
           type: string
-        
         descriptions:
           type: array
           items:
             $ref: '#/components/schemas/Eventdescriptions'
-        
         bodies:
           type: array
           items:
             $ref: '#/components/schemas/Eventbodies'
-            
-        
         headlines:
           type: array
           items:
             $ref: '#/components/schemas/EventHeadlines'
-            
+
         people:
           type: array
           items:
             $ref: '#/components/schemas/Eventpeople'
-            
         organisations:
           type: array
           items:
             $ref: '#/components/schemas/organisationType'   
-        
         places:
           type: array
           items:
@@ -833,35 +877,28 @@ components:
         properties: 
           name: 
             title: Name
-            
             type: string
           uri: 
             title: URI
-            
             type: string
           literal: 
             title: Literal
-            
             type: string
     Eventrightsinfo: 
       title: Rights information
       type: object
-      
       properties: 
         langid: 
           type: string
           title: Language id
-          
           format: uri
         linkedrights: 
           title: Linked rights
-          
           type: string
           format: uri
         encodedrights: 
           title: Encoded Rights
           type: string
-          
       oneOf: [
           required: [
             linkedrights
@@ -870,30 +907,22 @@ components:
             encodedrights
           ]
       ]
-              
-      
     truncatedDateTimeType:
       type: string
-      
     contactinfoType:
       type: object
       additionalProperties: false
       properties:
         type:
           type: string
-        
         role:
           type: string
-         
         lang:
           type: string
-         
         name:
           type: string
-         
         value:
           type: string
-         
         address:
           type: object
           description: The address of a person, place or organisation.
@@ -901,27 +930,19 @@ components:
           properties:
             lines:
               type: array
-              
               items:
                 type: string
-                
             locality:
               type: string
-             
             area:
               type: string
-              
             postalcode:
               type: string
-              
             country:
               type: string
-              
       oneOf:
         - required: [value]
         - required: [address]
-        
-        
     datesobjectType:
       type: object
       additionalProperties: false
@@ -931,15 +952,12 @@ components:
         enddate:
           $ref: '#/components/schemas/truncatedDateTimeType'
         duration:
-          
           type: string
         recurrence:
           type: object
-          
           properties:
             recurrence-dates:
               type: array
-              
               items:
                 $ref: '#/components/schemas/truncatedDateTimeType'
             recurrence-rules:
@@ -960,13 +978,11 @@ components:
                       - yearly
                   interval:
                     type: string
-                       
                   until:
                     type: string
-                      
                   count:
                     type: string
-    
+
 
     organisationType:
       type: object
@@ -974,33 +990,25 @@ components:
       properties:
         name:
           type: string
-            
         rel:
           type: string
-            
         uri:
           type: string
-            
           format: uri
         literal:
           type: string
-            
         symbols:
           type: array
-            
           items:
             type: object
             additionalProperties: false
             properties:
               ticker:
                 type: string
-                  
               exchange:
                 type: string
-                  
               symboltype:
                 type: string
-                  
                 format: uri
               symbol:
                 type: string
