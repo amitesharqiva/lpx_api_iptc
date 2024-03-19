@@ -1,0 +1,12 @@
+# DatesobjectTypeRecurrenceRecurrencerules
+
+## Properties
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**frequency** | **str** |  | [optional] 
+**interval** | **str** |  | [optional] 
+**until** | **str** |  | [optional] 
+**count** | **str** |  | [optional] 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
