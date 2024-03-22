@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains the LPC API project, a powerful and flexible API for managing events. The API allows users to publish events, subscribe to events, and retrieve event metadata.
+This repository contains the LPX API project, a powerful and flexible API for managing events. The API allows users to publish events, subscribe to events, and retrieve event metadata.
 
 ## Features
 
