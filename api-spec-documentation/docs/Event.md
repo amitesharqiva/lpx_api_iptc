@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **versioncreated** | **datetime** |  | [optional] 
 **contentcreated** | **datetime** |  | [optional] 
 **embargoed** | **datetime** |  | [optional] 
+**urgency** | **float** |  | [optional] 
 **copyrightholder** | **str** |  | [optional] 
 **copyrightnotice** | **str** |  | [optional] 
 **usageterms** | **str** |  | [optional] 

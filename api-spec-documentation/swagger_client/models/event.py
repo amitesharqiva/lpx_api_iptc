@@ -36,6 +36,7 @@ class Event(object):
         'versioncreated': 'datetime',
         'contentcreated': 'datetime',
         'embargoed': 'datetime',
+        'urgency': 'float',
         'copyrightholder': 'str',
         'copyrightnotice': 'str',
         'usageterms': 'str',
@@ -76,6 +77,7 @@ class Event(object):
         'versioncreated': 'versioncreated',
         'contentcreated': 'contentcreated',
         'embargoed': 'embargoed',
+        'urgency': 'urgency',
         'copyrightholder': 'copyrightholder',
         'copyrightnotice': 'copyrightnotice',
         'usageterms': 'usageterms',
@@ -107,7 +109,7 @@ class Event(object):
         'rightsinfo': 'rightsinfo'
     }
 
-    def __init__(self, uri=None, type=None, representationtype=None, profile=None, version=None, versioncreated=None, contentcreated=None, embargoed=None, copyrightholder=None, copyrightnotice=None, usageterms=None, ednote=None, language=None, descriptions=None, bodies=None, headlines=None, people=None, organisations=None, places=None, subjects=None, events=None, eventdetails=None, plannedcoverage=None, objects=None, infosources=None, title=None, by=None, slugline=None, located=None, renditions=None, associations=None, altids=None, trustindicators=None, standard=None, genres=None, expires=None, rightsinfo=None):  # noqa: E501
+    def __init__(self, uri=None, type=None, representationtype=None, profile=None, version=None, versioncreated=None, contentcreated=None, embargoed=None, urgency=None, copyrightholder=None, copyrightnotice=None, usageterms=None, ednote=None, language=None, descriptions=None, bodies=None, headlines=None, people=None, organisations=None, places=None, subjects=None, events=None, eventdetails=None, plannedcoverage=None, objects=None, infosources=None, title=None, by=None, slugline=None, located=None, renditions=None, associations=None, altids=None, trustindicators=None, standard=None, genres=None, expires=None, rightsinfo=None):  # noqa: E501
         """Event - a model defined in Swagger"""  # noqa: E501
         self._uri = None
         self._type = None
@@ -117,6 +119,7 @@ class Event(object):
         self._versioncreated = None
         self._contentcreated = None
         self._embargoed = None
+        self._urgency = None
         self._copyrightholder = None
         self._copyrightnotice = None
         self._usageterms = None
@@ -162,6 +165,8 @@ class Event(object):
             self.contentcreated = contentcreated
         if embargoed is not None:
             self.embargoed = embargoed
+        if urgency is not None:
+            self.urgency = urgency
         if copyrightholder is not None:
             self.copyrightholder = copyrightholder
         if copyrightnotice is not None:
@@ -401,6 +406,27 @@ class Event(object):
         """
 
         self._embargoed = embargoed
+
+    @property
+    def urgency(self):
+        """Gets the urgency of this Event.  # noqa: E501
+
+
+        :return: The urgency of this Event.  # noqa: E501
+        :rtype: float
+        """
+        return self._urgency
+
+    @urgency.setter
+    def urgency(self, urgency):
+        """Sets the urgency of this Event.
+
+
+        :param urgency: The urgency of this Event.  # noqa: E501
+        :type: float
+        """
+
+        self._urgency = urgency
 
     @property
     def copyrightholder(self):
