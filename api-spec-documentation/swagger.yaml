@@ -1,31 +1,49 @@
 openapi: 3.0.0
 info:
   title: LPX API
-  version: '3.0'
+  version: "3.4"
 servers:
-  - url: /
+- url: https://api.lpx-dev.arqiva-cs.com
 paths:
-  /events:
+  /events/{id}:
     get:
       summary: Select Event
+      parameters:
+      - name: id
+        in: path
+        description: ID of the item to fetch
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       responses:
-        '200':
+        "200":
           description: Event details
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Event'
-        '404':
+        "404":
           description: Event not found
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-select_event/invocations
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-select_event/invocations"
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-select_event-invokelambdarole"
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
     put:
       summary: Update Event
+      parameters:
+      - name: id
+        in: path
+        description: ID of the item to fetch
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -33,17 +51,41 @@ paths:
               $ref: '#/components/schemas/Event'
         required: true
       responses:
-        '200':
+        "200":
           description: Event updated
-        '404':
+        "404":
           description: Event not found
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-update_event/invocations
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-update_event/invocations"
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-update_event-invokelambdarole"
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
+    delete:
+      summary: Delete Event
+      parameters:
+      - name: id
+        in: path
+        description: ID of the item to fetch
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Event deleted
+        "404":
+          description: Event not found
+      x-amazon-apigateway-integration:
+        type: aws_proxy
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-delete_event/invocations"
+        httpMethod: POST
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-delete_event-invokelambdarole"
+        passthroughBehavior: when_no_match
+        timeoutInMillis: 5000
+  /events:
     post:
       summary: Create Event
       requestBody:
@@ -53,40 +95,71 @@ paths:
               $ref: '#/components/schemas/Event'
         required: true
       responses:
-        '201':
+        "201":
           description: Event created
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/inlineresponse201'
-        '400':
+        "400":
           description: Invalid input
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-create_event/invocations
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-create_event/invocations"
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-create_event-invokelambdarole"
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
-    delete:
-      summary: Delete Event
+  /events/share_event:
+    post:
+      summary: Share Event
+      parameters:
+      - name: id
+        in: query
+        description: Event id
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: user_id
+        in: query
+        description: The id of the user to share with - specific user or can take
+          All to grant every one access
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          default: All
+      - name: share
+        in: query
+        description: Indicates to add a share or remove a share
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: true
       responses:
-        '200':
-          description: Event deleted
-        '404':
-          description: Event not found
+        "200":
+          description: Event shared successfully
+        "400":
+          description: Invalid input
+        "404":
+          description: Event or user not found
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-delete_event/invocations
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-share_event/invocations"
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-share_event-invokelambdarole"
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
   /events/list:
     get:
       summary: List Events
       responses:
-        '200':
+        "200":
           description: An array of events
           content:
             application/json:
@@ -96,14 +169,17 @@ paths:
                   $ref: '#/components/schemas/Event'
       x-amazon-apigateway-integration:
         type: aws_proxy
-        uri: arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-list_events/invocations
+        uri: "arn:aws:apigateway:${base_region}:lambda:path/2015-03-31/functions/arn:aws:lambda:${base_region}:${aws_account_id}:function:${environment}-list_events/invocations"
         httpMethod: POST
-        credentials: arn:aws:iam::${aws_account_id}:role/${environment}-profile_delete_lambda-invokelambdarole
+        credentials: "arn:aws:iam::${aws_account_id}:role/${environment}-list_events-invokelambdarole"
         passthroughBehavior: when_no_match
         timeoutInMillis: 5000
 components:
   schemas:
     Event:
+      required:
+      - eventdetails
+      - uri
       type: object
       properties:
         uri:
@@ -111,268 +187,148 @@ components:
         type:
           type: string
           enum:
-            - text
-            - audio
-            - video
-            - picture
-            - graphic
-            - composite
-            - component
-            - event
-            - planning
+          - text
+          - audio
+          - video
+          - picture
+          - graphic
+          - composite
+          - component
+          - event
+          - planning
         representationtype:
           type: string
-          description: Indicates how complete this representation of a news item is. No mapping to nar. Specific for ninjs.
           enum:
-            - full
-            - partial
+          - full
+          - partial
         profile:
           type: string
-        
         version:
           type: string
-        
         versioncreated:
           type: string
           format: date-time
-          
         contentcreated:
           type: string
           format: date-time
-        
-
         embargoed:
           type: string
           format: date-time
-        
-        
         urgency:
           type: number
-        
         copyrightholder:
           type: string
-          
         copyrightnotice:
-          type: string 
-          
+          type: string
         usageterms:
-          type: string 
-        
+          type: string
         ednote:
-          type: string 
-        
+          type: string
         language:
           type: string
-        
         descriptions:
           type: array
           items:
-            $ref: '#/components/schemas/Eventdescriptions'
-        
+            $ref: '#/components/schemas/Event_descriptions'
         bodies:
           type: array
           items:
-            $ref: '#/components/schemas/Eventbodies'
-            
-        
+            $ref: '#/components/schemas/Event_bodies'
         headlines:
           type: array
           items:
-            $ref: '#/components/schemas/EventHeadlines'
-            
+            $ref: '#/components/schemas/Event_descriptions'
         people:
           type: array
           items:
-            $ref: '#/components/schemas/Eventpeople'
-            
+            $ref: '#/components/schemas/Event_people'
         organisations:
           type: array
           items:
-            $ref: '#/components/schemas/organisationType'   
-        
+            $ref: '#/components/schemas/organisationType'
         places:
           type: array
           items:
-            $ref: '#/components/schemas/EventPlaces'    
-          
+            $ref: '#/components/schemas/Event_people'
         subjects:
           type: array
           items:
-            $ref: '#/components/schemas/EventSubjects'
-        
+            $ref: '#/components/schemas/Event_subjects'
         events:
           type: array
           items:
-            $ref: '#/components/schemas/Events'
-        
+            $ref: '#/components/schemas/Event_events'
         eventdetails:
-          type: array
-          items:
-            $ref: '#/components/schemas/EventDetails'
-        
+          $ref: '#/components/schemas/Event_eventdetails'
         plannedcoverage:
           type: array
           items:
-            $ref: '#/components/schemas/EventPlannedCoverage'  
-            
+            $ref: '#/components/schemas/Event_plannedcoverage'
         objects:
           type: array
           items:
-            $ref: '#/components/schemas/EventObjects'  
-            
+            $ref: '#/components/schemas/Event_objects'
         infosources:
           type: array
           items:
-            $ref: '#/components/schemas/Eventinfosources' 
-            
+            $ref: '#/components/schemas/Event_infosources'
         title:
           type: string
-          
         by:
-          type: string 
-          
+          type: string
         slugline:
-          type: string  
-          
+          type: string
         located:
           type: string
-          
-        renditions: 
+        renditions:
           type: array
-          items: 
+          items:
             $ref: '#/components/schemas/renditionType'
-            
         associations:
           type: array
           items:
-            $ref: '#/components/schemas/Eventassociations'  
-            
+            additionalProperties: false
+            allOf:
+            - $ref: '#/components/schemas/Event'
+            - required:
+              - name
+              - uri
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Name of associated object
         altids:
           type: array
           items:
-            $ref: '#/components/schemas/EventAltIds'
-          
+            $ref: '#/components/schemas/Event_altids'
         trustindicators:
           type: array
           items:
-            $ref: '#/components/schemas/Eventtrustindicators'  
-            
+            $ref: '#/components/schemas/Event_trustindicators'
         standard:
-          type: object
-          items:
-            $ref: '#/components/schemas/Eventstandard'  
-            
+          $ref: '#/components/schemas/Event_standard'
         genres:
           type: array
           items:
-            $ref: '#/components/schemas/Eventgenres' 
-            
+            $ref: '#/components/schemas/Event_genres'
         expires:
           type: string
           format: date-time
-          
         rightsinfo:
-          type: object
-          items:
-            $ref: '#/components/schemas/Eventrightsinfo' 
-
-            
+          $ref: '#/components/schemas/Event_rightsinfo'
     inlineresponse201:
       type: object
       properties:
         id:
           type: string
           description: The ID of the created event
-    
-    Eventbodies:
-      type: array
-      items:
-        type: object
-        required: [value]
-        additionalProperties: false
-        properties:
-          role:
-            type: string
-            title: Role
-          contenttype:
-            type: string
-          charcount:
-            type: integer
-          wordcount:
-            type: integer
-            
-          value:
-            type: string
-            
-    
-    Eventdescriptions:
-      type: array
-      items:
-        type: object
-        required: [value]
-        additionalProperties: false
-        properties:
-          role:
-            type: string
-          contenttype:
-            type: string
-          value:
-            type: string
-    
-    Events:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-            
-          name:
-            type: string
-            
-          rel:
-            type: string
-            
-          uri:
-            type: string
-            format: uri
-            
-          literal:
-            type: string
-            
-        additionalProperties: false
-        
-    
-    EventAltIds:
-      type: array
-      items:
-        type: object
-        properties:
-          role:
-            type: string
-            description: The role of the alternative id
-          value:
-            type: string
-            description: The alternative id value
-        additionalProperties: false
-            
-    EventRenditionTypepoi:
-      type: object
-      properties:
-        x:
-          type: integer
-        y:
-          type: integer
     renditionType:
+      required:
+      - name
       type: object
       properties:
-        items:
-          type: array
-          items:
-            type: object
-            additionalProperties: false
         name:
-          title: Name
           type: string
         uri:
           type: string
@@ -388,16 +344,19 @@ components:
           type: string
         signal:
           type: string
-        transportprotocol: 
+        transportprotocol:
           type: string
-          enum: 
-            - srtlistener
-            - srtcaller
+          enum:
+          - srtlistener
+          - srtcaller
         maxbitrate:
           type: number
         cidr:
           type: string
         port:
+          maximum: 65535
+          exclusiveMaximum: true
+          minimum: 1024
           type: number
         srtpassword:
           type: string
@@ -407,13 +366,11 @@ components:
           type: string
         minlatency:
           type: number
-        codec:
-          type: string
         scantype:
           type: string
           enum:
-            - progressive
-            - interlaced
+          - progressive
+          - interlaced
         bitrate:
           type: number
         gop:
@@ -421,9 +378,9 @@ components:
         ratecontrolmode:
           type: string
           enum:
-            - CBR
-            - VBR
-            - QVBR
+          - CBR
+          - VBR
+          - QVBR
         contenttype:
           type: string
         title:
@@ -469,8 +426,6 @@ components:
           type: string
         framerate:
           type: number
-        resolution:
-          type: string
         audiocodec:
           type: string
         scene:
@@ -478,31 +433,168 @@ components:
         printsize:
           type: number
         poi:
-          $ref: '#/components/schemas/EventRenditionTypepoi'
-          
-    commissionedType: 
-      type: object
+          $ref: '#/components/schemas/renditionType_poi'
       additionalProperties: false
-      properties: 
-        by: 
+    commissionedType:
+      type: object
+      properties:
+        by:
           type: string
-        on: 
+        "true":
           type: string
           format: date-time
-        references: 
+        references:
           type: array
-          items: 
-            type: object
-            additionalProperties: false
-            properties: 
-              name: 
-                type: string
-              value: 
-                type: string
-    
-    EventStatus:
+          items:
+            $ref: '#/components/schemas/commissionedType_references'
+      additionalProperties: false
+    truncatedDateTimeType:
       type: string
-      enum:
+    contactinfoType:
+      type: object
+      properties:
+        type:
+          type: string
+        role:
+          type: string
+        lang:
+          type: string
+        name:
+          type: string
+        value:
+          type: string
+        address:
+          $ref: '#/components/schemas/contactinfoType_address'
+      additionalProperties: false
+      oneOf:
+      - required:
+        - value
+      - required:
+        - address
+    datesobjectType:
+      type: object
+      properties:
+        startdate:
+          $ref: '#/components/schemas/truncatedDateTimeType'
+        enddate:
+          $ref: '#/components/schemas/truncatedDateTimeType'
+        duration:
+          type: string
+        recurrence:
+          $ref: '#/components/schemas/datesobjectType_recurrence'
+      additionalProperties: false
+    organisationType:
+      type: object
+      properties:
+        name:
+          type: string
+        rel:
+          type: string
+        uri:
+          type: string
+          format: uri
+        literal:
+          type: string
+        symbols:
+          type: array
+          items:
+            $ref: '#/components/schemas/organisationType_symbols'
+        contactinfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactinfoType'
+      additionalProperties: false
+    Event_descriptions:
+      required:
+      - value
+      type: object
+      properties:
+        role:
+          type: string
+        contenttype:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+    Event_bodies:
+      required:
+      - value
+      type: object
+      properties:
+        role:
+          type: string
+        contenttype:
+          type: string
+        charcount:
+          type: integer
+        wordcount:
+          type: integer
+        value:
+          type: string
+      additionalProperties: false
+    Event_people:
+      type: object
+      properties:
+        name:
+          type: string
+        rel:
+          type: string
+        uri:
+          type: string
+          format: uri
+        literal:
+          type: string
+        contactinfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/contactinfoType'
+      additionalProperties: false
+    Event_subjects:
+      type: object
+      properties:
+        name:
+          type: string
+        rel:
+          type: string
+        uri:
+          type: string
+          format: uri
+        literal:
+          type: string
+        creator:
+          type: string
+        relevance:
+          maximum: 100
+          minimum: 0
+          type: integer
+          format: int32
+        confidence:
+          maximum: 100
+          minimum: 0
+          type: integer
+          format: int32
+      additionalProperties: false
+    Event_events:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rel:
+          type: string
+        uri:
+          type: string
+          format: uri
+        literal:
+          type: string
+      additionalProperties: false
+    Event_eventdetails:
+      type: object
+      properties:
+        eventstatus:
+          type: string
+          enum:
           - pre-event
           - mid-event
           - post-event
@@ -516,496 +608,245 @@ components:
           - intermission
           - if-necessary
           - discarded
-          
-                
-    EventDetails:
-      type: object
-      properties:
-        eventstatus:
-          $ref: '#/components/schemas/EventStatus'
         dates:
-            $ref: '#/components/schemas/datesobjectType'
+          $ref: '#/components/schemas/datesobjectType'
         organiser:
-            $ref: '#/components/schemas/organisationType'
-
+          $ref: '#/components/schemas/organisationType'
       additionalProperties: false
-      
-      
-      
-    EventHeadlines:
-      type: array
-      items:
-        type: object
-        required: [value]
-        additionalProperties: false
-        properties:
-          role:
-            type: string
-            title: Role
-          contenttype:
-            type: string
-            title: Content Type
-          value:
-            type: string
-            title: Value
-          
-    EventPlaces:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-            
-          rel:
-            type: string
-            
-          uri:
-            type: string
-            format: uri
-            
-          literal:
-            type: string
-            
-          contactinfo:
-            type: array
-            items:
-              $ref: '#/components/schemas/contactinfoType'
-          geojson:
-            $ref: 'https://geojson.org/schema/GeoJSON.json#'
-        additionalProperties: false
-        
-        
-    Eventpeople:
-      type: array
-      items:
-        type: object
-        additionalProperties: false
-        properties:
-          name:
-            type: string
-            
-          rel:
-            type: string
-            
-          uri:
-            type: string
-            format: uri
-            
-          literal:
-            type: string
-            
-          contactinfo:
-            type: array
-            items:
-              $ref: '#/components/schemas/contactinfoType'
-            
-    EventSubjects:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-            
-          rel:
-            type: string
-
-          uri:
-            type: string
-            format: uri
-            
-          literal:
-            type: string
-            
-          creator:
-            type: string
-
-          relevance:
-            type: integer
-            format: int32
-            minimum: 0
-            maximum: 100
-
-          confidence:
-            type: integer
-            format: int32
-            minimum: 0
-            maximum: 100
-            
-        additionalProperties: false
-
-        
-    EventPlannedCoverage:
-      type: array
-      items:
-        type: object
-        properties:
-          uri:
-            type: string
-          title:
-            type: string
-          pubstatus:
-            type: string
-            enum:
-              - usable
-              - withheld
-              - canceled  
-          commissioned: 
-            $ref: '#/components/schemas/commissionedType'
-            
-          dates:
-            $ref: '#/components/schemas/datesobjectType'
-
-          type:
-            type: string
-
-          event:
-            type: string
-          audiences:
-            type: array
-            items:
-              type: object
-              properties:
-                audience:
-                  type: string
-                significance:
-                  type: integer
-                  format: int32
-
-              additionalProperties: false
-          exclaudience:
-            type: array
-            items:
-              type: string
-
-          headline:
-            type: string
-
-          ednote:
-            type: string
-
-          urgency:
-            type: string
-
-          language:
-            type: string
-
-          scheduled:
-            type: string
-          
-          services:
-            type: array
-            items:
-              type: string
-          
-          assignedto:
-            type: string
-          
-          itemcount:
-            type: object
-            properties:
-              rangefrom:
-                type: integer
-                format: int32
-              rangeto:
-                type: integer
-                format: int32
-          
-          wordcount:
-            type: integer
-            format: int32
-          
-          renditions:
-            type: array
-            items:
-              $ref: '#/components/schemas/renditionType'
-    
-    
-    
-    EventObjects:
-      type: array
-      items:
-        type: object
-        properties:
-          name:
-            type: string
-            
-          rel:
-            type: string
-            
-          uri:
-            type: string
-            format: uri
-            
-          literal:
-            type: string
-            
-        additionalProperties: false
-      
-    Eventinfosources:
-      type: array
-      items:
-        type: object
-        additionalProperties: false
-        properties:
-          name:
-            type: string
-            
-          role:
-            type: string
-            
-          uri:
-            type: string
-            
-            format: uri
-          literal:
-            type: string
-            
-          contactinfo:
-            type: array
-            items:
-              $ref: '#/components/schemas/contactinfoType'
-              
-    Eventassociations:
-      type: array
-      items: 
-        allOf:
-          - $ref: '#/components/schemas/Event'
-          - type: object
-            properties: 
-              name: 
-                type: string
-                description: Name of associated object
-            required: 
-              - name
-              - uri
-        additionalProperties: false
-        
-    Eventtrustindicators: 
-      title: Trust indicators
-      
-      type: array
-      items: 
-        type: object
-        additionalProperties: false
-        properties: 
-          role: 
-            title: Role
-            
-            type: string
-            format: uri
-          title: 
-            title: Title
-            
-            type: string
-          href: 
-            title: href
-            
-            type: string
-            format: uri
-    Eventstandard: 
-      title: Standard
+    Event_audiences:
       type: object
-      
-      additionalProperties: false
-      properties: 
-        name: 
-          title: Name of standard.
-          
-          type: string
-        version: 
-          title: Version of standard.
-          
-          type: string
-        schema: 
-          title: Schema
-          
-          type: string
-          format: uri
-    Eventgenres: 
-      title: Genres
-      
-      type: array
-      items: 
-        type: object
-        additionalProperties: false
-        properties: 
-          name: 
-            title: Name
-            
-            type: string
-          uri: 
-            title: URI
-            
-            type: string
-          literal: 
-            title: Literal
-            
-            type: string
-    Eventrightsinfo: 
-      title: Rights information
-      type: object
-      
-      properties: 
-        langid: 
-          type: string
-          title: Language id
-          
-          format: uri
-        linkedrights: 
-          title: Linked rights
-          
-          type: string
-          format: uri
-        encodedrights: 
-          title: Encoded Rights
-          type: string
-          
-      oneOf: [
-          required: [
-            linkedrights
-          ],
-          required: [
-            encodedrights
-          ]
-      ]
-              
-      
-    truncatedDateTimeType:
-      type: string
-      
-    contactinfoType:
-      type: object
-      additionalProperties: false
       properties:
-        type:
+        audience:
           type: string
-        
-        role:
-          type: string
-         
-        lang:
-          type: string
-         
-        name:
-          type: string
-         
-        value:
-          type: string
-         
-        address:
-          type: object
-          description: The address of a person, place or organisation.
-          additionalProperties: false
-          properties:
-            lines:
-              type: array
-              
-              items:
-                type: string
-                
-            locality:
-              type: string
-             
-            area:
-              type: string
-              
-            postalcode:
-              type: string
-              
-            country:
-              type: string
-              
-      oneOf:
-        - required: [value]
-        - required: [address]
-        
-        
-    datesobjectType:
-      type: object
+        significance:
+          type: integer
+          format: int32
       additionalProperties: false
-      properties:
-        startdate:
-          $ref: '#/components/schemas/truncatedDateTimeType'
-        enddate:
-          $ref: '#/components/schemas/truncatedDateTimeType'
-        duration:
-          
-          type: string
-        recurrence:
-          type: object
-          
-          properties:
-            recurrence-dates:
-              type: array
-              
-              items:
-                $ref: '#/components/schemas/truncatedDateTimeType'
-            recurrence-rules:
-              type: array
-              items:
-                type: object
-                additionalProperties: false
-                properties:
-                  frequency:
-                    type: string
-                    enum:
-                      - secondly
-                      - minutely
-                      - hourly
-                      - daily
-                      - weekly
-                      - monthly
-                      - yearly
-                  interval:
-                    type: string
-                       
-                  until:
-                    type: string
-                      
-                  count:
-                    type: string
-    
-
-    organisationType:
+    Event_itemcount:
       type: object
-      additionalProperties: false
       properties:
-        name:
-          type: string
-            
-        rel:
-          type: string
-            
+        rangefrom:
+          type: integer
+          format: int32
+        rangeto:
+          type: integer
+          format: int32
+    Event_plannedcoverage:
+      type: object
+      properties:
         uri:
           type: string
-            
+        title:
+          type: string
+        pubstatus:
+          type: string
+          enum:
+          - usable
+          - withheld
+          - canceled
+        commissioned:
+          $ref: '#/components/schemas/commissionedType'
+        dates:
+          $ref: '#/components/schemas/datesobjectType'
+        type:
+          type: string
+        event:
+          type: string
+        audiences:
+          type: array
+          items:
+            $ref: '#/components/schemas/Event_audiences'
+        exclaudience:
+          type: array
+          items:
+            type: string
+        headline:
+          type: string
+        ednote:
+          type: string
+        urgency:
+          type: string
+        language:
+          type: string
+        scheduled:
+          type: string
+        services:
+          type: array
+          items:
+            type: string
+        assignedto:
+          type: string
+        itemcount:
+          $ref: '#/components/schemas/Event_itemcount'
+        wordcount:
+          type: integer
+          format: int32
+        renditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/renditionType'
+    Event_objects:
+      type: object
+      properties:
+        name:
+          type: string
+        rel:
+          type: string
+        uri:
+          type: string
           format: uri
         literal:
           type: string
-            
-        symbols:
-          type: array
-            
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              ticker:
-                type: string
-                  
-              exchange:
-                type: string
-                  
-              symboltype:
-                type: string
-                  
-                format: uri
-              symbol:
-                type: string
-
+      additionalProperties: false
+    Event_infosources:
+      type: object
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+        uri:
+          type: string
+          format: uri
+        literal:
+          type: string
         contactinfo:
           type: array
           items:
             $ref: '#/components/schemas/contactinfoType'
+      additionalProperties: false
+    Event_altids:
+      type: object
+      properties:
+        role:
+          type: string
+          description: The role of the alternative id
+        value:
+          type: string
+          description: The alternative id value
+      additionalProperties: false
+    Event_trustindicators:
+      type: object
+      properties:
+        role:
+          type: string
+          format: uri
+        title:
+          type: string
+        href:
+          type: string
+          format: uri
+      additionalProperties: false
+    Event_standard:
+      type: object
+      properties:
+        name:
+          type: string
+        version:
+          type: string
+        schema:
+          type: string
+          format: uri
+      additionalProperties: false
+    Event_genres:
+      type: object
+      properties:
+        name:
+          type: string
+        uri:
+          type: string
+        literal:
+          type: string
+      additionalProperties: false
+    Event_rightsinfo:
+      type: object
+      properties:
+        langid:
+          type: string
+          format: uri
+        linkedrights:
+          type: string
+          format: uri
+        encodedrights:
+          type: string
+    renditionType_poi:
+      type: object
+      properties:
+        x:
+          type: integer
+        "y":
+          type: integer
+    commissionedType_references:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+    contactinfoType_address:
+      type: object
+      properties:
+        lines:
+          type: array
+          items:
+            type: string
+        locality:
+          type: string
+        area:
+          type: string
+        postalcode:
+          type: string
+        country:
+          type: string
+      additionalProperties: false
+    datesobjectType_recurrence_recurrencerules:
+      type: object
+      properties:
+        frequency:
+          type: string
+          enum:
+          - secondly
+          - minutely
+          - hourly
+          - daily
+          - weekly
+          - monthly
+          - yearly
+        interval:
+          type: string
+        until:
+          type: string
+        count:
+          type: string
+      additionalProperties: false
+    datesobjectType_recurrence:
+      type: object
+      properties:
+        recurrence-dates:
+          type: array
+          items:
+            $ref: '#/components/schemas/truncatedDateTimeType'
+        recurrence-rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/datesobjectType_recurrence_recurrencerules'
+    organisationType_symbols:
+      type: object
+      properties:
+        ticker:
+          type: string
+        exchange:
+          type: string
+        symboltype:
+          type: string
+          format: uri
+        symbol:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    api-key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      x-amazon-apigateway-api-key-source: HEADER
