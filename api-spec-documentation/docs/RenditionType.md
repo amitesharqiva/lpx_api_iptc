@@ -3,8 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**items** | **list[object]** |  | [optional] 
-**name** | **str** |  | [optional] 
+**name** | **str** |  | 
 **uri** | **str** |  | [optional] 
 **version** | **int** |  | [optional] 
 **versionguid** | **str** |  | [optional] 
@@ -19,7 +18,6 @@ Name | Type | Description | Notes
 **listeneraddress** | **str** |  | [optional] 
 **streamid** | **str** |  | [optional] 
 **minlatency** | **float** |  | [optional] 
-**codec** | **str** |  | [optional] 
 **scantype** | **str** |  | [optional] 
 **bitrate** | **float** |  | [optional] 
 **gop** | **float** |  | [optional] 
@@ -46,7 +44,6 @@ Name | Type | Description | Notes
 **videocodec** | **str** |  | [optional] 
 **videoscaling** | **str** |  | [optional] 
 **framerate** | **float** |  | [optional] 
-**resolution** | **str** |  | [optional] 
 **audiocodec** | **str** |  | [optional] 
 **scene** | **str** |  | [optional] 
 **printsize** | **float** |  | [optional] 

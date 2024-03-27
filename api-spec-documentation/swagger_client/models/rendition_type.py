@@ -28,7 +28,6 @@ class RenditionType(object):
                             and the value is json key in definition.
     """
     swagger_types = {
-        'items': 'list[object]',
         'name': 'str',
         'uri': 'str',
         'version': 'int',
@@ -44,7 +43,6 @@ class RenditionType(object):
         'listeneraddress': 'str',
         'streamid': 'str',
         'minlatency': 'float',
-        'codec': 'str',
         'scantype': 'str',
         'bitrate': 'float',
         'gop': 'float',
@@ -71,7 +69,6 @@ class RenditionType(object):
         'videocodec': 'str',
         'videoscaling': 'str',
         'framerate': 'float',
-        'resolution': 'str',
         'audiocodec': 'str',
         'scene': 'str',
         'printsize': 'float',
@@ -79,7 +76,6 @@ class RenditionType(object):
     }
 
     attribute_map = {
-        'items': 'items',
         'name': 'name',
         'uri': 'uri',
         'version': 'version',
@@ -95,7 +91,6 @@ class RenditionType(object):
         'listeneraddress': 'listeneraddress',
         'streamid': 'streamid',
         'minlatency': 'minlatency',
-        'codec': 'codec',
         'scantype': 'scantype',
         'bitrate': 'bitrate',
         'gop': 'gop',
@@ -122,16 +117,14 @@ class RenditionType(object):
         'videocodec': 'videocodec',
         'videoscaling': 'videoscaling',
         'framerate': 'framerate',
-        'resolution': 'resolution',
         'audiocodec': 'audiocodec',
         'scene': 'scene',
         'printsize': 'printsize',
         'poi': 'poi'
     }
 
-    def __init__(self, items=None, name=None, uri=None, version=None, versionguid=None, href=None, code=None, signal=None, transportprotocol=None, maxbitrate=None, cidr=None, port=None, srtpassword=None, listeneraddress=None, streamid=None, minlatency=None, codec=None, scantype=None, bitrate=None, gop=None, ratecontrolmode=None, contenttype=None, title=None, generated=None, height=None, width=None, sizeinbytes=None, duration=None, averagebitrate=None, format=None, originalfilename=None, fileextension=None, digest=None, samplerate=None, audiochannels=None, audiobitrate=None, aspectratio=None, colourspace=None, backgroundcolour=None, orientation=None, videocodec=None, videoscaling=None, framerate=None, resolution=None, audiocodec=None, scene=None, printsize=None, poi=None):  # noqa: E501
+    def __init__(self, name=None, uri=None, version=None, versionguid=None, href=None, code=None, signal=None, transportprotocol=None, maxbitrate=None, cidr=None, port=None, srtpassword=None, listeneraddress=None, streamid=None, minlatency=None, scantype=None, bitrate=None, gop=None, ratecontrolmode=None, contenttype=None, title=None, generated=None, height=None, width=None, sizeinbytes=None, duration=None, averagebitrate=None, format=None, originalfilename=None, fileextension=None, digest=None, samplerate=None, audiochannels=None, audiobitrate=None, aspectratio=None, colourspace=None, backgroundcolour=None, orientation=None, videocodec=None, videoscaling=None, framerate=None, audiocodec=None, scene=None, printsize=None, poi=None):  # noqa: E501
         """RenditionType - a model defined in Swagger"""  # noqa: E501
-        self._items = None
         self._name = None
         self._uri = None
         self._version = None
@@ -147,7 +140,6 @@ class RenditionType(object):
         self._listeneraddress = None
         self._streamid = None
         self._minlatency = None
-        self._codec = None
         self._scantype = None
         self._bitrate = None
         self._gop = None
@@ -174,16 +166,12 @@ class RenditionType(object):
         self._videocodec = None
         self._videoscaling = None
         self._framerate = None
-        self._resolution = None
         self._audiocodec = None
         self._scene = None
         self._printsize = None
         self._poi = None
         self.discriminator = None
-        if items is not None:
-            self.items = items
-        if name is not None:
-            self.name = name
+        self.name = name
         if uri is not None:
             self.uri = uri
         if version is not None:
@@ -212,8 +200,6 @@ class RenditionType(object):
             self.streamid = streamid
         if minlatency is not None:
             self.minlatency = minlatency
-        if codec is not None:
-            self.codec = codec
         if scantype is not None:
             self.scantype = scantype
         if bitrate is not None:
@@ -266,8 +252,6 @@ class RenditionType(object):
             self.videoscaling = videoscaling
         if framerate is not None:
             self.framerate = framerate
-        if resolution is not None:
-            self.resolution = resolution
         if audiocodec is not None:
             self.audiocodec = audiocodec
         if scene is not None:
@@ -276,27 +260,6 @@ class RenditionType(object):
             self.printsize = printsize
         if poi is not None:
             self.poi = poi
-
-    @property
-    def items(self):
-        """Gets the items of this RenditionType.  # noqa: E501
-
-
-        :return: The items of this RenditionType.  # noqa: E501
-        :rtype: list[object]
-        """
-        return self._items
-
-    @items.setter
-    def items(self, items):
-        """Sets the items of this RenditionType.
-
-
-        :param items: The items of this RenditionType.  # noqa: E501
-        :type: list[object]
-        """
-
-        self._items = items
 
     @property
     def name(self):
@@ -316,6 +279,8 @@ class RenditionType(object):
         :param name: The name of this RenditionType.  # noqa: E501
         :type: str
         """
+        if name is None:
+            raise ValueError("Invalid value for `name`, must not be `None`")  # noqa: E501
 
         self._name = name
 
@@ -618,27 +583,6 @@ class RenditionType(object):
         """
 
         self._minlatency = minlatency
-
-    @property
-    def codec(self):
-        """Gets the codec of this RenditionType.  # noqa: E501
-
-
-        :return: The codec of this RenditionType.  # noqa: E501
-        :rtype: str
-        """
-        return self._codec
-
-    @codec.setter
-    def codec(self, codec):
-        """Sets the codec of this RenditionType.
-
-
-        :param codec: The codec of this RenditionType.  # noqa: E501
-        :type: str
-        """
-
-        self._codec = codec
 
     @property
     def scantype(self):
@@ -1197,27 +1141,6 @@ class RenditionType(object):
         """
 
         self._framerate = framerate
-
-    @property
-    def resolution(self):
-        """Gets the resolution of this RenditionType.  # noqa: E501
-
-
-        :return: The resolution of this RenditionType.  # noqa: E501
-        :rtype: str
-        """
-        return self._resolution
-
-    @resolution.setter
-    def resolution(self, resolution):
-        """Sets the resolution of this RenditionType.
-
-
-        :param resolution: The resolution of this RenditionType.  # noqa: E501
-        :type: str
-        """
-
-        self._resolution = resolution
 
     @property
     def audiocodec(self):
